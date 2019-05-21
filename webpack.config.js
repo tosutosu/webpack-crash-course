@@ -1,6 +1,7 @@
 const path = require("path");
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const outputPath = path.resolve(__dirname, "dist");
 
@@ -19,7 +20,7 @@ module.exports = {
             },
             {
                 test: /\.(css|scss)$/,
-                use: [ MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             },
             {
                 test: /\.(jpe?g|png|gif|svg|ico)$/i,
@@ -31,8 +32,8 @@ module.exports = {
             },
             {
                 test: /\.html$/,
-                loader: "html-loader"
-            }
+                loader: "html-loader",
+            },
         ],
     },
     devServer: {
@@ -40,11 +41,20 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: './src/index.html',
-            filename: 'index.html'
+            template: "./src/index.html",
+            filename: "index.html",
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash].css'
-        })
-    ]
+            filename: "[name].[hash].css",
+        }),
+    ],
+    optimization: {
+        minimizer: [new UglifyJsPlugin({
+            uglifyOptions: {
+                compress: {
+                    drop_console: true
+                }
+            }
+        })],
+    },
 };
