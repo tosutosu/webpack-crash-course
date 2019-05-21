@@ -61,4 +61,3 @@ typings/
 .next
 
 /dist/main.js
-package-lock.json
